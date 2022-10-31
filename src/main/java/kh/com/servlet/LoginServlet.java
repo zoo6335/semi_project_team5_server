@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 		StringBuffer sb = Common.reqStringBuff(request); // request를 common.reqStringBuff에 담아서 "문자열"로 변환한 다음 sb에 담는다. -> front와 backend는 json으로 통신한다.
 		JSONObject jsonObj = Common.getJsonObj(sb); // 문자열로 변환한 sb를를 JsonObj으로 만들어서 담는다.  -> 왜냐면 통신은 json으로 이루어지기 떄문에
 		
-		String getId = (String)jsonObj.get("id");
+		String getId = (String)jsonObj.get("id"); // 프론로부터 들어온 id
 		String getPwd = (String)jsonObj.get("pwd");
 		MemberDAO dao = new MemberDAO(); // database와 통신하기 위해 DAO를 만들어둔다.
 		boolean isRegister = dao.loginCheck(getId, getPwd); // 아이디 비밀번호가 있는지 체크

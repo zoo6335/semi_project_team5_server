@@ -19,20 +19,20 @@ public class MemberDAO {
 	//SQL문을 미리 컴파일해서 재 사용하므로 Statement 인터페이스보다 훨씬 빠르게 데이터베이스 작업을 수행
 	private PreparedStatement pstmt = null;
 	
-	public boolean loginCheck(String id, String pwd) {
+	public boolean loginCheck(String user_id, String pwd) {
 		boolean isReg = false;
 		try {
 			conn = Common.getConnection();
 			stmt = conn.createStatement(); // Statement 객체를 얻어냄
-			String sql = "SELECT * from T_MEMBER WHERE id = " + "'" + id + "'";
+			String sql = "SELECT * from B_MEMBER WHERE USER_ID = " + "'" + user_id + "'";
 			rs = stmt.executeQuery(sql);
 			
 			while(rs.next()) {
-				String sqlId = rs.getString("ID");
+				String sqlId = rs.getString("USER_ID");
 				String sqlPwd = rs.getString("PWD");
 				System.out.println("ID  : " + sqlId);
 				System.out.println("password : " + sqlPwd);
-				if(id.equals(sqlId) && pwd.equals(sqlPwd)) {
+				if(user_id.equals(sqlId) && pwd.equals(sqlPwd)) {
 					Common.close(rs);
 					Common.close(stmt);
 					Common.close(conn);
@@ -47,12 +47,12 @@ public class MemberDAO {
 		return false;
 	}
 	
-	public boolean regIdCheck(String id) {
+	public boolean regIdCheck(String user_id) {
 		boolean isNotReg = false;
 		try {
 			conn = Common.getConnection();
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM T_MEMBER WHERE ID = " + "'" + id + "'";
+			String sql = "SELECT * FROM B_MEMBER WHERE USER_ID = " + "'" + user_id + "'";
 			rs = stmt.executeQuery(sql);
 			
 			if(rs.next()) isNotReg = false;
@@ -68,25 +68,28 @@ public class MemberDAO {
 	}
 	
 	
-	public List<MemberVO> memberSelect() {
+	public List<MemberVO> memberSelect(String reqId) {
 		List<MemberVO> list = new ArrayList<>();
 		try {
 			conn = Common.getConnection();
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM T_MEMBER";
+			String sql = null;
+			if(reqId.equals("ALL")) sql = "SELECT * FROM B_MEMBER";
+			else sql = "SELECT * FROM B_MEMBER WHREE ID = " + "'" + reqId + "'";
+			
 			rs = stmt.executeQuery(sql);
 			
 			// 로그인 과는 다르게 rs.next에는 회원정보를 전부 긁어오기 때문에 next에는 true 다음 바로 false가 아닌 값이 들어온다.
 			while(rs.next()) {
 				
-				String id = rs.getString("ID");
+				String id = rs.getString("USER_ID");
 				String pwd = rs.getString("PWD");
 				String name = rs.getString("NAME");
 				String email = rs.getString("EMAIL");
 				Date join = rs.getDate("JOIN");
 				
 				MemberVO vo = new MemberVO();
-				vo.setId(id);
+				vo.setUser_id(id);
 				vo.setPwd(pwd);
 				vo.setName(name);
 				vo.setEmail(email);
@@ -106,16 +109,16 @@ public class MemberDAO {
 		return list;
 	}
 	
-	public boolean memberRegister(String id, String pwd, String name, String email) {
+	public boolean memberRegister(String user_id, String pwd, String name, String email) {
 		int result = 0;
 		
-		String sql = "INSERT INTO T_MEMBER(ID, PWD, NAME, EMAIL, JOIN) VALUES(?,?,?,?, SYSDATE)";
+		String sql = "INSERT INTO B_MEMBER(USER_ID, PWD, NAME, EMAIL, JOIN) VALUES(?,?,?,?, SYSDATE)";
 		
 		
 		try {
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
+			pstmt.setString(1, user_id);
 			pstmt.setString(2, pwd);
 			pstmt.setString(3, name);
 			pstmt.setString(4, email);
@@ -134,16 +137,16 @@ public class MemberDAO {
 		else return false;
 	}
 	
-	public boolean memberDelete(String id) {
+	public boolean memberDelete(String user_id) {
 		int result = 0;
 		
-		String sql = "DELETE FROM T_MEMBER WHERE ID = ?";
+		String sql = "DELETE FROM B_MEMBER WHERE USER_ID = ?";
 		try {
 			
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, id);
+			pstmt.setString(1, user_id);
 			result = pstmt.executeUpdate();
 			
 		} catch(Exception e) {

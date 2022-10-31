@@ -43,6 +43,7 @@ public class MemberServlet extends HttpServlet {
 		
 		System.out.println("Command : " + (String)jsonObj.get("cmd"));
 		String reqCmd = (String)jsonObj.get("cmd");
+		String reqId = (String)jsonObj.get("id");
 		
 		PrintWriter out = response.getWriter();
 		
@@ -53,13 +54,13 @@ public class MemberServlet extends HttpServlet {
 		}
 		
 		MemberDAO dao = new MemberDAO();
-		List<MemberVO> list = dao.memberSelect();
+		List<MemberVO> list = dao.memberSelect(reqId);
 		
 		JSONArray memberArray = new JSONArray();
 		
 		for(MemberVO e : list) {
 			JSONObject memberInfo = new JSONObject();
-			memberInfo.put("id", e.getId());
+			memberInfo.put("id", e.getUser_id());
 			memberInfo.put("pwd", e.getPwd());
 			memberInfo.put("name", e.getName());
 			memberInfo.put("email", e.getEmail());
