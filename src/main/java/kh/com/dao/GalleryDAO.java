@@ -68,19 +68,18 @@ public class GalleryDAO {
 		return list;
 	}
 	
-	public boolean galleryRegister(int gal_id, String title, String content, String image_url) {
+	public boolean galleryRegister( String title, String content, String image_url) {
 		int result = 0;
 		
-		String sql = "INSERT INTO GALLERY(GAL_ID, TITLE, CONTENT, IMAGE_URL, CREATE_DATE, UPDATE_DATE) VALUES(?,?,?,?, SYSDATE, SYSDATE)";
+		String sql = "INSERT INTO GALLERY(GAL_ID, TITLE, CONTENT, IMAGE_URL, CREATE_DATE, UPDATE_DATE) VALUES(GALLERY_SEQUENCE.NEXTVAL,?,?,?, SYSDATE, SYSDATE)";
 		
 		
 		try {
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, gal_id);
-			pstmt.setString(2, title);
-			pstmt.setString(3, content);
-			pstmt.setString(4, image_url);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setString(3, image_url);
 			result = pstmt.executeUpdate(); // SELECT문은 executeQuery, executeUpdate는 INSERT, UPDATE, DELETE 일 떄!
 			System.out.println("갤러리 글쓰기 DB 결과 확인 : " + result);
 			

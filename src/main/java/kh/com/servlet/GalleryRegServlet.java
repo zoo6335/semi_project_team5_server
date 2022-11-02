@@ -43,15 +43,13 @@ public class GalleryRegServlet extends HttpServlet {
 		JSONObject jsonObj = Common.getJsonObj(sb);
 	
 		
-		String getId = (String)jsonObj.get("gal_id");
 		String getTItle = (String)jsonObj.get("title");
 		String getContent = (String)jsonObj.get("content");
 		String getUrl = (String)jsonObj.get("image_url");
 		
-		int intId = Integer.parseInt(getId);
 		
 		GalleryDAO dao = new GalleryDAO();
-		boolean rstComplete = dao.galleryRegister(intId, getTItle, getContent, getUrl);
+		boolean rstComplete = dao.galleryRegister(getTItle, getContent, getUrl);
 		
 		PrintWriter out = response.getWriter();
 		JSONObject resJson = new JSONObject();
