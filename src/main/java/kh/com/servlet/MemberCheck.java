@@ -34,6 +34,7 @@ public class MemberCheck extends HttpServlet {
 		
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
+		
 		String getId = (String)jsonObj.get("id");
 		
 		MemberDAO dao = new MemberDAO();

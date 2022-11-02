@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kh.com.common.Common;
-import kh.com.vo.MemberVO;
+import kh.com.vo.GalleryVO;
 
-public class MemberDAO {
+public class GalleryDAO {
 
 	private Connection conn = null; // 연결하기
 	private Statement stmt = null; // 표준 SQL 문을 수행하기 위한 Statement 객체 얻기
@@ -19,81 +19,40 @@ public class MemberDAO {
 	//SQL문을 미리 컴파일해서 재 사용하므로 Statement 인터페이스보다 훨씬 빠르게 데이터베이스 작업을 수행
 	private PreparedStatement pstmt = null;
 	
-	public boolean loginCheck(String user_id, String pwd) {
-		boolean isReg = false;
-		try {
-			conn = Common.getConnection();
-			stmt = conn.createStatement(); // Statement 객체를 얻어냄
-			String sql = "SELECT * from B_MEMBER WHERE USER_ID = " + "'" + user_id + "'";
-			rs = stmt.executeQuery(sql);
-			
-			while(rs.next()) {
-				String sqlId = rs.getString("USER_ID");
-				String sqlPwd = rs.getString("PWD");
-				System.out.println("ID  : " + sqlId);
-				System.out.println("password : " + sqlPwd);
-				if(user_id.equals(sqlId) && pwd.equals(sqlPwd)) {
-					Common.close(rs);
-					Common.close(stmt);
-					Common.close(conn);
-					return true;
-				}
-			} 
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		} 
-		
-		return false;
-	}
 	
-	public boolean regIdCheck(String user_id) {
-		boolean isNotReg = false;
-		try {
-			conn = Common.getConnection();
-			stmt = conn.createStatement();
-			String sql = "SELECT * FROM B_MEMBER WHERE USER_ID = " + "'" + user_id + "'";
-			rs = stmt.executeQuery(sql);
-			
-			if(rs.next()) isNotReg = false;
-			else isNotReg = true;
-			
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-		Common.close(rs);
-		Common.close(stmt);
-		Common.close(conn);
-		return isNotReg;
-	}
-	
-	
-	public List<MemberVO> memberSelect(String reqId) {
-		List<MemberVO> list = new ArrayList<>();
+	public List<GalleryVO> gallerySelect(String reqId) {
+		List<GalleryVO> list = new ArrayList<>();
 		try {
 			conn = Common.getConnection();
 			stmt = conn.createStatement();
 			String sql = null;
-			if(reqId.equals("ALL")) sql = "SELECT * FROM B_MEMBER";
-			else sql = "SELECT * FROM B_MEMBER WHERE USER_ID = " + "'" + reqId + "'";
+			
+			if(reqId.equals("ALL")) sql = "SELECT * FROM GALLERY";
+			else {
+				int intId = Integer.parseInt(reqId);
+				sql = "SELECT * FROM GALLERY WHERE GAL_ID = " +  intId;
+			}
 			
 			rs = stmt.executeQuery(sql);
 			
 			// 로그인 과는 다르게 rs.next에는 회원정보를 전부 긁어오기 때문에 next에는 true 다음 바로 false가 아닌 값이 들어온다.
 			while(rs.next()) {
 				
-				String id = rs.getString("USER_ID");
-				String pwd = rs.getString("PWD");
-				String name = rs.getString("NAME");
-				String email = rs.getString("EMAIL");
-				Date join = rs.getDate("JOIN");
+				int gal_id = rs.getInt("GAL_ID");
+				String title = rs.getString("TITLE");
+				String content = rs.getString("CONTENT");
+				String image_url = rs.getString("IMAGE_URL");
+				Date create_date = rs.getDate("CREATE_DATE");
+				Date update_date = rs.getDate("UPDATE_DATE");
+
 				
-				MemberVO vo = new MemberVO();
-				vo.setUser_id(id);
-				vo.setPwd(pwd);
-				vo.setName(name);
-				vo.setEmail(email);
-				vo.setJoin(join);
+				GalleryVO vo = new GalleryVO();
+				vo.setGal_id(gal_id);
+				vo.setTitle(title);
+				vo.setContent(content);
+				vo.setImage_url(image_url);
+				vo.setCreate_date(create_date);
+				vo.setUpdate_date(update_date);
 				list.add(vo);
 			}
 			
@@ -109,21 +68,21 @@ public class MemberDAO {
 		return list;
 	}
 	
-	public boolean memberRegister(String user_id, String pwd, String name, String email) {
+	public boolean galleryRegister(int gal_id, String title, String content, String image_url) {
 		int result = 0;
 		
-		String sql = "INSERT INTO B_MEMBER(USER_ID, PWD, NAME, EMAIL, JOIN) VALUES(?,?,?,?, SYSDATE)";
+		String sql = "INSERT INTO GALLERY(GAL_ID, TITLE, CONTENT, IMAGE_URL, CREATE_DATE, UPDATE_DATE) VALUES(?,?,?,?, SYSDATE, SYSDATE)";
 		
 		
 		try {
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, user_id);
-			pstmt.setString(2, pwd);
-			pstmt.setString(3, name);
-			pstmt.setString(4, email);
+			pstmt.setInt(1, gal_id);
+			pstmt.setString(2, title);
+			pstmt.setString(3, content);
+			pstmt.setString(4, image_url);
 			result = pstmt.executeUpdate(); // SELECT문은 executeQuery, executeUpdate는 INSERT, UPDATE, DELETE 일 떄!
-			System.out.println("회원 가입 DB 결과 확인 : " + result);
+			System.out.println("갤러리 글쓰기 DB 결과 확인 : " + result);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
