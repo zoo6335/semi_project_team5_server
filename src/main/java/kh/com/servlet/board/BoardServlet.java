@@ -1,7 +1,9 @@
-package kh.com.servlet.freeboard;
+package kh.com.servlet.board;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,14 +15,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import kh.com.common.Common;
+import kh.com.dao.BoardDAO;
+import kh.com.vo.BoardVO;
 
-
-import kh.com.dao.FreeBoardDAO;
-import kh.com.vo.FreeBoardVO;
-
-@WebServlet("/UpdateBoardServlet")
-public class BoardUpdateServlet extends HttpServlet {
+@WebServlet("/BoardServlet")
+public class BoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+      
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
@@ -40,21 +41,29 @@ public class BoardUpdateServlet extends HttpServlet {
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
 		
-		String reqFb_id = (String)jsonObj.get("fb_id");
+		String reqCmd = (String)jsonObj.get("cmd");
 		PrintWriter out = response.getWriter();
-		int getFb_id = Integer.parseInt(reqFb_id);
-		// String -> int로 형변환
-		
-		FreeBoardDAO dao = new FreeBoardDAO();
-		List<FreeBoardVO> list = dao.boardDetail(getFb_id);
+		if(!reqCmd.equals("TBoardList")) {
+			JSONObject resJson = new JSONObject();
+			resJson.put("result", "NOK");
+			out.print(resJson);
+			return;
+		} 
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> list = dao.BoardSelect();
 		
 		JSONArray boardArray = new JSONArray();
-		for (FreeBoardVO e : list) {
-			JSONObject fBoardlist = new JSONObject();
-			fBoardlist.put("fb_category", e.getFb_category());
-			fBoardlist.put("fb_title", e.getFb_title());
-			fBoardlist.put("fb_content", e.getFb_content());
-			boardArray.add(fBoardlist);
+		for (BoardVO e : list) {
+			JSONObject boardList = new JSONObject();
+			boardList.put("id", e.getId());
+			boardList.put("title", e.getTitle());
+			boardList.put("content", e.getContent());
+			boardList.put("writedate", e.getWritedate());
+			boardList.put("comment_num", e.getComment_num());
+			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
+			String dateToStr = dateFormat.format(e.getWritedate());
+			boardList.put("writedate", dateToStr);
+			boardArray.add(boardList);
 		}
 		System.out.println(boardArray);
 		out.print(boardArray);

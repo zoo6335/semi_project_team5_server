@@ -1,4 +1,4 @@
-package kh.com.servlet.freeboard;
+package kh.com.servlet.board;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,10 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import kh.com.common.Common;
+import kh.com.dao.BoardDAO;
 
-import kh.com.dao.FreeBoardDAO;
-
-@WebServlet("/DeleteBoardServlet")
+@WebServlet("/BoardDeleteServlet")
 public class BoardDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -31,10 +30,11 @@ public class BoardDeleteServlet extends HttpServlet {
 		Common.corsResSet(response);
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
-		
-		String getFb_id = (String)jsonObj.get("fb_id");
-		FreeBoardDAO dao = new FreeBoardDAO();
-		boolean isDelComplete = dao.boardDelete(getFb_id);
+		String getId = (String)jsonObj.get("id");
+		int intId = Integer.parseInt(getId);
+		System.out.println("전달 받은 ID : " + intId);
+		BoardDAO dao = new BoardDAO();
+		boolean isDelComplete = dao.boardDelete(intId);
 		
 		PrintWriter out = response.getWriter();
 		JSONObject resJson = new JSONObject();
@@ -42,4 +42,5 @@ public class BoardDeleteServlet extends HttpServlet {
 		else resJson.put("result", "NOK");
 		out.print(resJson);
 	}
+
 }

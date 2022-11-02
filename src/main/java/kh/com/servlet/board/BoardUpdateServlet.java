@@ -1,4 +1,4 @@
-package kh.com.servlet.freeboard;
+package kh.com.servlet.board;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,13 +8,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.simple.JSONObject;
+
 import kh.com.common.Common;
+import kh.com.dao.BoardDAO;
 
-import kh.com.dao.FreeBoardDAO;
 
-@WebServlet("/DeleteBoardServlet")
-public class BoardDeleteServlet extends HttpServlet {
+@WebServlet("/BoardUpdateServlet")
+public class BoardUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,20 +27,28 @@ public class BoardDeleteServlet extends HttpServlet {
 		Common.corsResSet(response);
 	}
 
-	@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		Common.corsResSet(response);
-		StringBuffer sb = Common.reqStringBuff(request);
-		JSONObject jsonObj = Common.getJsonObj(sb);
 		
-		String getFb_id = (String)jsonObj.get("fb_id");
-		FreeBoardDAO dao = new FreeBoardDAO();
-		boolean isDelComplete = dao.boardDelete(getFb_id);
+		StringBuffer sb = Common.reqStringBuff(request); // request를 reqStringBuff에 담아서 "문자열"로 변환한 다음 sb에 담는다. -> front와 backd은 json으로 통신
+		JSONObject jsonObj = Common.getJsonObj(sb); // 문자열로 변환한 sb를 JsonObj으로 만들어서 담는다.  -> 왜냐면 통신은 json으로 이루어지기 떄문에
+		
+		String getId = (String)jsonObj.get("id");
+		int intId = Integer.parseInt(getId); // id가 number형이므로, String인 getId를 number형으로 변환
+		System.out.println("전달 받은 ID : " + intId);
+		String getTitle = (String)jsonObj.get("title");
+		String getContent = (String)jsonObj.get("content");
+		
+
+		BoardDAO dao = new BoardDAO();
+		boolean rstComplete = dao.boardUpdate(intId,getTitle,getContent);
 		
 		PrintWriter out = response.getWriter();
 		JSONObject resJson = new JSONObject();
-		if(isDelComplete) resJson.put("result", "OK");
+		
+		if(rstComplete) resJson.put("result", "OK");
 		else resJson.put("result", "NOK");
 		out.print(resJson);
 	}
