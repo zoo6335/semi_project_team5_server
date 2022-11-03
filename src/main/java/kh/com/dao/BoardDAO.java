@@ -66,28 +66,30 @@ public class BoardDAO extends HttpServlet {
 		return list;
 	}
 	
-//	// 게시판 글 작성하기 - id(시퀀스), 작성자명(로그인한 사람의 닉네임), 댓글수(??)는 어떻게 처리할지...!
-//	public boolean WriteBoard(String title, String content) {
-//		int result = 0;
-//		String sql = "INSERT INTO BOARDLIST(ID, TITLE, CONTENT, WRITEDATE, COMMENT_NUM) VALUES(ID_SEQ.Nextval, ?, ?, SYSDATE, 0)";
-//		try {
-//			conn = Common.getConnection();
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, title);
-//			pstmt.setString(2, content);
-//			result = pstmt.executeUpdate();	
-//			System.out.println("게시물 작성 DB 결과 확인 : " + result);
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//		Common.close(pstmt);
-//		Common.close(conn);
-//		
-//		if(result == 1) return true;
-//		else return false;
-//}
+//	새글 작성하기
+	public boolean WriteBoard(String getUserId, String getTitle, String getContent) {
+		int result = 0;
+		String sql = "INSERT INTO GET_MEMBER_BOARD(GMB_ID, GMB_USER_ID, GMB_TITLE, GMB_CONTENT, GMB_C_DATE, GMB_U_DATE, GMB_RECOMMEND, GMB_DONE, GMB_APPLY, GMB_HIT)"
+				+ " VALUES(GMB_ID_SEQ.NEXTVAL, ? , ? , ? , DEFAULT, NULL, 1, 0, DEFAULT, 0)";
+		try {
+			conn = Common.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, getUserId);
+			pstmt.setString(2, getTitle);
+			pstmt.setString(3, getContent);
+			result = pstmt.executeUpdate();	
+			System.out.println("게시물 작성 DB 결과 확인 : " + result);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Common.close(pstmt);
+		Common.close(conn);
+		
+		if(result == 1) return true;
+		else return false;
+}
 
 ////	게시판 상세내용 불러오기
 //	public List<BoardVO> DetailBoard(int intId) {
@@ -121,7 +123,7 @@ public class BoardDAO extends HttpServlet {
 //		}
 //		return list;
 //	}
-//	
+	
 ////게시물 수정
 //	public boolean boardUpdate(int intId, String title, String content) {
 //		int result = 0;

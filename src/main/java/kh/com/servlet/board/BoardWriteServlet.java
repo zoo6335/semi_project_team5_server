@@ -33,11 +33,12 @@ public class BoardWriteServlet extends HttpServlet {
 		Common.corsResSet(response);
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
-		String getTitle = (String)jsonObj.get("title");
-		String getContent = (String)jsonObj.get("content");
+		String getGmb_user_id = (String)jsonObj.get("gmb_user_id");
+		String getGmb_title = (String)jsonObj.get("gmb_title");
+		String getGmb_content = (String)jsonObj.get("gmb_content");
 		
 		BoardDAO dao = new BoardDAO();
-		boolean rstComplete = dao.WriteBoard(getTitle, getContent);
+		boolean rstComplete = dao.WriteBoard(getGmb_user_id, getGmb_title, getGmb_content);
 		
 		PrintWriter out = response.getWriter();
 		JSONObject resJson = new JSONObject();
