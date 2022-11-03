@@ -44,8 +44,9 @@ public class BoardDetailServlet extends HttpServlet {
 		JSONObject jsonObj = Common.getJsonObj(sb);
 		PrintWriter out = response.getWriter();
 		
-		String getId = (String)jsonObj.get("id");
-		int intId = Integer.parseInt(getId);
+		String getGmb_id = (String)jsonObj.get("gmb_id");
+		// JSON 데이터는 String 이므로 -> 원하는 Int 형으로 변환
+		int intId = Integer.parseInt(getGmb_id);
 		System.out.println("전달 받은 ID : " + intId);
 		
 		BoardDAO dao = new BoardDAO();
@@ -54,14 +55,14 @@ public class BoardDetailServlet extends HttpServlet {
 		JSONArray boardArray = new JSONArray();
 		for (BoardVO e : list) {
 			JSONObject boardList = new JSONObject();
-			boardList.put("id", e.getId());
-			boardList.put("title", e.getTitle());
-			boardList.put("content", e.getContent());
-			boardList.put("writedate", e.getWritedate());
-			boardList.put("comment_num", e.getComment_num());
+			boardList.put("gmb_id", e.getGmb_id());
+			boardList.put("gmb_title", e.getGmb_title());
+			boardList.put("gmb_user_id", e.getGmb_user_id());
+			boardList.put("gmb_content", e.getGmb_content());
 			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
-			String dateToStr = dateFormat.format(e.getWritedate());
-			boardList.put("writedate", dateToStr);
+			String dateToStr = dateFormat.format(e.getGmb_c_date());
+			boardList.put("gmb_c_date", dateToStr);
+			boardList.put("gmb_hit", e.getGmb_hit());
 			boardArray.add(boardList);
 		}
 		System.out.println(boardArray);
