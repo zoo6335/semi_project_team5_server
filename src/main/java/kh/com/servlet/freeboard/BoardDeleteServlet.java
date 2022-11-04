@@ -13,7 +13,7 @@ import kh.com.common.Common;
 
 import kh.com.dao.FreeBoardDAO;
 
-@WebServlet("/DeleteBoardServlet")
+@WebServlet("/fBoardDeleteServlet")
 public class BoardDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -43,3 +43,4 @@ public class BoardDeleteServlet extends HttpServlet {
 		out.print(resJson);
 	}
 }
+
