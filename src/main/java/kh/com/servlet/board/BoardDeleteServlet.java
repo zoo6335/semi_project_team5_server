@@ -30,8 +30,8 @@ public class BoardDeleteServlet extends HttpServlet {
 		Common.corsResSet(response);
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
-		String getId = (String)jsonObj.get("id");
-		int intId = Integer.parseInt(getId);
+		String getGmb_id = (String)jsonObj.get("gmb_id");
+		int intId = Integer.parseInt(getGmb_id);
 		System.out.println("전달 받은 ID : " + intId);
 		BoardDAO dao = new BoardDAO();
 		boolean isDelComplete = dao.boardDelete(intId);

@@ -66,7 +66,7 @@ public class BoardDAO extends HttpServlet {
 		return list;
 	}
 	
-//	새글 작성하기
+//	게시판 새글 작성하기
 	public boolean WriteBoard(String getUserId, String getTitle, String getContent) {
 		int result = 0;
 		String sql = "INSERT INTO GET_MEMBER_BOARD(GMB_ID, GMB_USER_ID, GMB_TITLE, GMB_CONTENT, GMB_C_DATE, GMB_U_DATE, GMB_RECOMMEND, GMB_DONE, GMB_APPLY, GMB_HIT)"
@@ -99,7 +99,6 @@ public class BoardDAO extends HttpServlet {
 			stmt = conn.createStatement();
 			String sql = "SELECT * FROM GET_MEMBER_BOARD WHERE GMB_ID = " + intId ;
 			rs = stmt.executeQuery(sql);
-			
 			while(rs.next()) {
 				int gmb_id = rs.getInt("GMB_ID");
 				String gmb_user_id = rs.getString("GMB_USER_ID");
@@ -134,45 +133,48 @@ public class BoardDAO extends HttpServlet {
 		return list;
 	}
 	
-////게시물 수정
-//	public boolean boardUpdate(int intId, String title, String content) {
-//		int result = 0;
-//		String sql = "UPDATE BOARDLIST SET TITLE = ?, CONTENT = ? WHERE ID = " + intId;
-//		
-//		try {
-//			conn = Common.getConnection();
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, title);
-//			pstmt.setString(2, content);
-//			result = pstmt.executeUpdate();	
-//			System.out.println("게시물 작성 DB 결과 확인 : " + result);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		Common.close(pstmt);
-//		Common.close(conn);
-//		if(result == 1) return true;
-//		else return false;
-//	}
-//	
-////게시물 삭제 
-//	public boolean boardDelete(int intId) {
-//		int result = 0;
-//		String sql = "DELETE FROM BOARDLIST WHERE ID = ?";
-//		
-//		try {
-//			conn = Common.getConnection();
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setInt(1, intId);
-//			result = pstmt.executeUpdate();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		Common.close(pstmt);
-//		Common.close(conn);
-//		if(result == 1) return true;
-//		else return false;
-//	}
+//게시물 수정
+	public boolean boardUpdate(int intId, String gmb_title, String gmb_content, String gmb_u_date) {
+		int result = 0;
+		String sql = "UPDATE GET_MEMBER_BOARD SET GMB_TITLE = ? , GMB_CONTENT = ? , GMB_U_DATE = ? WHERE GMB_ID = " + intId;
+		
+		try {
+			conn = Common.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, gmb_title);
+			pstmt.setString(2, gmb_content);
+			pstmt.setString(3, gmb_u_date);
+			
+			result = pstmt.executeUpdate();	
+			System.out.println("게시물 작성 DB 결과 확인 : " + result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Common.close(pstmt);
+		Common.close(conn);
+		if(result == 1) return true;
+		else return false;
+	}
+
+	
+//게시물 삭제 
+	public boolean boardDelete(int intId) {
+		int result = 0;
+		String sql = "DELETE FROM GET_MEMBER_BOARD WHERE GMB_ID = ?";
+		
+		try {
+			conn = Common.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, intId);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Common.close(pstmt);
+		Common.close(conn);
+		if(result == 1) return true;
+		else return false;
+	}
 	
 
 }
