@@ -16,7 +16,6 @@ import kh.com.vo.BoardRankVO;
 @WebServlet("/BoardRankSevlet") 
 public class BoardRankServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
     public BoardRankServlet() {
         super();
     }

@@ -16,7 +16,7 @@ import kh.com.common.Common;
 import kh.com.dao.CommentDAO;
 import kh.com.vo.CommentVO;
 
-@WebServlet("/CommenListServlet")
+@WebServlet("/CommentListServlet")
 public class CommentListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public CommentListServlet() {
@@ -37,6 +37,7 @@ public class CommentListServlet extends HttpServlet {
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
 		String reqCmd = (String)jsonObj.get("cmd");
+		String boardId= (String)jsonObj.get("id");
 		PrintWriter out = response.getWriter();
 		
 		if(!reqCmd.equals("CommentList")) {
@@ -46,7 +47,7 @@ public class CommentListServlet extends HttpServlet {
 			return;
 		}
 		CommentDAO dao = new CommentDAO(); 
-		List<CommentVO> list = dao.commentList(); 
+		List<CommentVO> list = dao.commentList(boardId); // 게시판 번호를 받아서 전달
 		
 		JSONArray commentArray = new JSONArray();
 		for(CommentVO e : list) {
@@ -54,12 +55,14 @@ public class CommentListServlet extends HttpServlet {
 			commentList.put("id", e.getId());
 			commentList.put("postId", e.getPostId());
 			commentList.put("content", e.getContent());
+			commentList.put("boardId", e.getBoardId());
 			
 			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
 			String dateToStr = dateFormat.format(e.getPostDate());
 			commentList.put("postDate", dateToStr); 
-			String dateToStr2 = dateFormat.format(e.getUpDate());
-			commentList.put("upDate", dateToStr2);
+			
+//			String dateToStr2 = dateFormat.format(e.getUpDate());
+//			commentList.put("upDate", dateToStr2);
 			commentArray.add(commentList);
 		}
 		System.out.println(commentArray);

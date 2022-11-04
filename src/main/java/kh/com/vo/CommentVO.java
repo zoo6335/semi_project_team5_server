@@ -8,7 +8,14 @@ public class CommentVO {
 	private String content;	// 댓글 내용
 	private Date postDate;	// 댓글 작성일
 	private Date upDate;	// 댓글 수정일
+	private int boardId;	// (댓글이 달린)게시물 아이디
 	
+	public int getBoardId() {
+		return boardId;
+	}
+	public void setBoardId(int boardId) {
+		this.boardId = boardId;
+	}
 	public String getId() {
 		return id;
 	}
