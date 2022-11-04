@@ -280,8 +280,7 @@ public class FreeBoardDAO {
 	// 게시판 글 작성
 	public boolean boardWrite(String fb_category, String fb_user_id, String fb_title, String fb_content) {
 		int result = 0;
-		String sql = "INSERT INTO FREE_BOARD(FB_ID, FB_CATEGORY, FB_USER_ID, FB_TITLE, FB_CONTENT, FB_C_DATE, FB_U_DATE, FB_RECOMMEND, FB_HIT)"
-				+ " VALUES(FB_ID_SEQ.NEXTVAL, ?, ?, ?, ?, SYSDATE, NULL, DEFAULT, DEFAULT)";
+		String sql = "INSERT INTO FREE_BOARD VALUES(FB_ID_SEQ.NEXTVAL, ?, ?, ?, ?, DEFAULT, NULL, DEFAULT, DEFAULT)";
 		try {
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
