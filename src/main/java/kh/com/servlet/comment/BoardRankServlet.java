@@ -27,6 +27,7 @@ public class BoardRankServlet extends HttpServlet {
 		    throws ServletException, IOException {
 		response = Common.corsResSet(response);
 	}
+	
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
