@@ -1,6 +1,6 @@
 package kh.com.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class BoardVO {
 	private int gmb_id;
