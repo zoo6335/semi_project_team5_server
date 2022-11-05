@@ -1,4 +1,4 @@
-package kh.com.servlet.freeboard;
+package kh.com.servlet.review;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,13 +8,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
 import org.json.simple.JSONObject;
+
 import kh.com.common.Common;
 
-import kh.com.dao.FreeBoardDAO;
+import kh.com.dao.ReviewBoardDAO;
 
-@WebServlet("/fBoardDeleteServlet")
-public class BoardDeleteServlet extends HttpServlet {
+@WebServlet("/ReviewBoardWriteServlet")
+public class ReviewBoardWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,16 +34,17 @@ public class BoardDeleteServlet extends HttpServlet {
 		Common.corsResSet(response);
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
+		String getTitle = (String)jsonObj.get("title");
+		String getContent = (String)jsonObj.get("content");
 		
-		String getFb_id = (String)jsonObj.get("fb_id");
-		FreeBoardDAO dao = new FreeBoardDAO();
-		boolean isDelComplete = dao.boardDelete(getFb_id);
+		ReviewBoardDAO dao = new ReviewBoardDAO();
+		boolean rstComplete = dao.WriteBoard(getTitle, getContent);
 		
 		PrintWriter out = response.getWriter();
 		JSONObject resJson = new JSONObject();
-		if(isDelComplete) resJson.put("result", "OK");
+		if(rstComplete) resJson.put("result", "OK");
 		else resJson.put("result", "NOK");
 		out.print(resJson);
+		return;
 	}
 }
-

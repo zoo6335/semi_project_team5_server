@@ -234,7 +234,7 @@ public class FreeBoardDAO {
 	      return list;
 	   }
 	
-	// 게시판 상세페이지 조회
+	// 게시판 상세페이지 조회 및 게시글 수정(DB 불러오기)
 	public List<FreeBoardVO> boardDetail(int getFb_id) {
 		List<FreeBoardVO> list = new ArrayList<>();
 		try {
@@ -280,8 +280,7 @@ public class FreeBoardDAO {
 	// 게시판 글 작성
 	public boolean boardWrite(String fb_category, String fb_user_id, String fb_title, String fb_content) {
 		int result = 0;
-		String sql = "INSERT INTO FREE_BOARD(FB_ID, FB_CATEGORY, FB_USER_ID, FB_TITLE, FB_CONTENT, FB_C_DATE, FB_U_DATE, FB_RECOMMEND, FB_HIT)"
-				+ " VALUES(FB_ID_SEQ.NEXTVAL, ?, ?, ?, ?, SYSDATE, NULL, DEFAULT, DEFAULT)";
+		String sql = "INSERT INTO FREE_BOARD VALUES(FB_ID_SEQ.NEXTVAL, ?, ?, ?, ?, DEFAULT, NULL, DEFAULT, DEFAULT)";
 		try {
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -302,7 +301,32 @@ public class FreeBoardDAO {
 		else return false;
 	}
 	
-	// 게시판 삭제
+	// 게시글 수정(DB 입력)
+	public boolean boardUpdatePush(String fb_category, String fb_title, String fb_content, int fb_id) {
+		int result = 0;
+		String sql = "UPDATE FREE_BOARD SET FB_CATEGORY = ?, FB_TITLE = ?, FB_CONTENT = ?, FB_U_DATE = DEFAULT WHERE FB_ID = ?";
+		try {
+			conn = Common.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fb_category);
+			pstmt.setString(2, fb_title);
+			pstmt.setString(3, fb_content);
+			pstmt.setInt(4, fb_id);
+			result = pstmt.executeUpdate();	
+			System.out.println("글 등록 결과 확인 : " + result);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Common.close(pstmt);
+		Common.close(conn);
+		
+		if(result == 1) return true;
+		else return false;
+	}
+	
+	
+	// 게시글 삭제
 	public boolean boardDelete(String fb_id) {
 		int result = 0;
 		String sql = "DELETE FROM FREE_BOARD WHERE FB_ID = ?";
@@ -320,4 +344,24 @@ public class FreeBoardDAO {
 		if(result == 1) return true; 
 		else return false;
 	}
+	
+	// 로그인 체크
+	public boolean regIdCheck(String fb_user_id) {
+		boolean isNotReg = false;
+		try {
+			conn = Common.getConnection();
+			stmt = conn.createStatement();
+			String sql = "SELECT * FROM FREE_BOARD WHERE ID = " + "'" + fb_user_id +"'";
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) isNotReg = false;
+			else isNotReg = true;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		Common.close(rs);
+		Common.close(stmt);
+		Common.close(conn);
+		return isNotReg; // 가입 되어 있으면 false, 가입이 안되어 있으면 true
+	}
+	
 }

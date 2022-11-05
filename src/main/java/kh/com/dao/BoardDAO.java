@@ -134,16 +134,15 @@ public class BoardDAO extends HttpServlet {
 	}
 	
 //게시물 수정
-	public boolean boardUpdate(int intId, String gmb_title, String gmb_content, String gmb_u_date) {
+	public boolean boardUpdate(int intId, String gmb_title, String gmb_content) {
 		int result = 0;
-		String sql = "UPDATE GET_MEMBER_BOARD SET GMB_TITLE = ? , GMB_CONTENT = ? , GMB_U_DATE = ? WHERE GMB_ID = " + intId;
+		String sql = "UPDATE GET_MEMBER_BOARD SET GMB_TITLE = ? , GMB_CONTENT = ? , GMB_U_DATE = SYSDATE WHERE GMB_ID = " + intId;
 		
 		try {
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, gmb_title);
 			pstmt.setString(2, gmb_content);
-			pstmt.setString(3, gmb_u_date);
 			
 			result = pstmt.executeUpdate();	
 			System.out.println("게시물 작성 DB 결과 확인 : " + result);

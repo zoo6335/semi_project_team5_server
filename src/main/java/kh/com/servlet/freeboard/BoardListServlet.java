@@ -21,7 +21,7 @@ import kh.com.common.Common;
 import kh.com.dao.FreeBoardDAO;
 import kh.com.vo.FreeBoardVO;
 
-@WebServlet("/BoardListServlet")
+@WebServlet("/AllBoardListServlet")
 public class BoardListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
