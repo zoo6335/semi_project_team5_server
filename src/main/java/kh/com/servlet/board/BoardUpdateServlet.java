@@ -37,6 +37,7 @@ public class BoardUpdateServlet extends HttpServlet {
 		StringBuffer sb = Common.reqStringBuff(request); // request를 reqStringBuff에 담아서 "문자열"로 변환한 다음 sb에 담는다. -> front와 back은 json으로 통신
 		JSONObject jsonObj = Common.getJsonObj(sb); // 문자열로 변환한 sb를 JsonObj으로 만들어서 담는다.  -> 왜냐면 통신은 json으로 이루어지기 떄문에
 		
+		
 		String getGmb_id = (String)jsonObj.get("gmb_id");
 		// JSON 데이터는 String 이므로 -> 원하는 Int 형으로 변환
 		int intId = Integer.parseInt(getGmb_id);
