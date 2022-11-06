@@ -62,6 +62,9 @@ public class BoardDetailServlet extends HttpServlet {
 			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
 			String dateToStr = dateFormat.format(e.getGmb_c_date());
 			boardList.put("gmb_c_date", dateToStr);
+			boardList.put("gmb_apply", e.getGmb_apply());
+			boardList.put("gmb_done", e.getGmb_done());
+			boardList.put("gmb_apply_total", e.getGmb_apply_total());
 			boardList.put("gmb_hit", e.getGmb_hit());
 			boardArray.add(boardList);
 		}

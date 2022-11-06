@@ -41,9 +41,11 @@ public class BoardUpdateServlet extends HttpServlet {
 		System.out.println("전달 받은 ID : " + intId);
 		String getGmb_title = (String)jsonObj.get("gmb_title");
 		String getGmb_content = (String)jsonObj.get("gmb_content");
+		String getGmb_apply_total = (String)jsonObj.get("gmb_apply_total");
+		int intApplyTotal = Integer.parseInt(getGmb_apply_total);
 	
 		BoardDAO dao = new BoardDAO();
-		boolean rstComplete = dao.boardUpdate(intId, getGmb_title,getGmb_content);
+		boolean rstComplete = dao.boardUpdate(intId, getGmb_title,getGmb_content, intApplyTotal);
 		
 		PrintWriter out = response.getWriter();
 		JSONObject resJson = new JSONObject();

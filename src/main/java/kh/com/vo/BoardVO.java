@@ -12,6 +12,7 @@ public class BoardVO {
 	private int gmb_recommend;
 	private String gmb_done;
 	private int gmb_apply;
+	private int gmb_apply_total;
 	private int gmb_hit;
 	
 	public int getGmb_id() {
@@ -67,6 +68,12 @@ public class BoardVO {
 	}
 	public void setGmb_apply(int gmb_apply) {
 		this.gmb_apply = gmb_apply;
+	}
+	public int getGmb_apply_total() {
+		return gmb_apply_total;
+	}
+	public void setGmb_apply_total(int gmb_apply_total) {
+		this.gmb_apply_total = gmb_apply_total;
 	}
 	public int getGmb_hit() {
 		return gmb_hit;
