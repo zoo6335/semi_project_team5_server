@@ -36,9 +36,11 @@ public class BoardWriteServlet extends HttpServlet {
 		String getGmb_user_id = (String)jsonObj.get("gmb_user_id");
 		String getGmb_title = (String)jsonObj.get("gmb_title");
 		String getGmb_content = (String)jsonObj.get("gmb_content");
+		String getGmb_apply_total = (String)jsonObj.get("gmb_apply_total");
+		int intApplyTotal = Integer.parseInt(getGmb_apply_total);
 		
 		BoardDAO dao = new BoardDAO();
-		boolean rstComplete = dao.WriteBoard(getGmb_user_id, getGmb_title, getGmb_content);
+		boolean rstComplete = dao.WriteBoard(getGmb_user_id, getGmb_title, getGmb_content, intApplyTotal);
 		
 		PrintWriter out = response.getWriter();
 		JSONObject resJson = new JSONObject();
