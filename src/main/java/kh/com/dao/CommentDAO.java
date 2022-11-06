@@ -14,7 +14,9 @@ public class CommentDAO {
 	private Connection conn = null;
 	private Statement stmt = null;
 	private ResultSet rs = null; 
+	private PreparedStatement pstmt = null;
 	
+	// 게시글 번호와 일치하는 댓글 조회
 	public List<CommentVO> commentList(String reqId) { 
 		int intId = Integer.parseInt(reqId);
 		List<CommentVO> list = new ArrayList<>();
@@ -30,16 +32,13 @@ public class CommentDAO {
 				int postId= rs.getInt("COMMENT_ID");
 				String content = rs.getString("COMMENT_CONTENT");
 				Date postDate = rs.getDate("COMMENT_C_DATE");
-//				Date upDate = rs.getDate("COMMENT_U_DATE");
 				
 				CommentVO vo = new CommentVO();
 				vo.setId(id);
 				vo.setPostId(postId);
 				vo.setContent(content);
 				vo.setBoardId(boardId);
-				vo.setPostDate(postDate);
-//				vo.setUpDate(upDate);
-				
+				vo.setPostDate(postDate);				
 				list.add(vo);		
 			}
 			Common.close(rs);
@@ -50,6 +49,30 @@ public class CommentDAO {
 				e.printStackTrace();
 		}
 		return list;
+	}
+	// 댓글 작성하기
+	public boolean insertComment(String id, String content, String boardId) { 
+		int intId = Integer.parseInt(boardId); // boardId 는 int 이지만 String으로 들어오기 때문에 형변환
+		int result = 0;
+		String sql= "INSERT INTO B_COMMENT VALUES(?, CM_ID_SEQ.NEXTVAL, ?, DEFAULT, NULL, ?) " ;
+		try {			
+			conn = Common.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2,  content);
+			pstmt.setInt(3,  intId);
+			result = pstmt.executeUpdate();
+			System.out.println("댓글 작성 결과 확인" + result);
+			 
+		} catch(Exception e) {
+				e.printStackTrace();
+		}
+		Common.close(rs);
+		Common.close(pstmt);
+		Common.close(conn);
+
+		if(result == 1) return true;
+		else return false;
 	}
 
 	
