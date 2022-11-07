@@ -15,7 +15,7 @@ import org.json.simple.JSONObject;
 import kh.com.common.Common;
 import kh.com.dao.BoardDAO;
 
-
+// 게시물 내용 수정
 @WebServlet("/BoardUpdateServlet")
 public class BoardUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

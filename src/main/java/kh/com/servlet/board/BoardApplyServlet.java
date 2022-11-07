@@ -18,6 +18,7 @@ import kh.com.dao.BoardDAO;
 import kh.com.vo.BoardVO;
 
 
+// 모집 신청하기
 @WebServlet("/BoardApplyServlet")
 public class BoardApplyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

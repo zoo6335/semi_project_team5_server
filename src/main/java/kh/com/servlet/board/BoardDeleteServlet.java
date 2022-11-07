@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 import kh.com.common.Common;
 import kh.com.dao.BoardDAO;
 
+// 게시물 삭제하기
 @WebServlet("/BoardDeleteServlet")
 public class BoardDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

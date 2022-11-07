@@ -18,6 +18,7 @@ import kh.com.common.Common;
 import kh.com.dao.BoardDAO;
 import kh.com.vo.BoardVO;
 
+// 게시판 리스트
 @WebServlet("/BoardServlet")
 public class BoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

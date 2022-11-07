@@ -15,7 +15,7 @@ import org.json.simple.JSONObject;
 import kh.com.common.Common;
 import kh.com.dao.BoardDAO;
 
-
+// 조회수 증가
 @WebServlet("/BoardUpdateHitServlet")
 public class BoardUpdateHitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
