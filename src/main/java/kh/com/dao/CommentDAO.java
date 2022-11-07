@@ -16,14 +16,14 @@ public class CommentDAO {
 	private ResultSet rs = null; 
 	private PreparedStatement pstmt = null;
 	
-	// 게시글 번호와 일치하는 댓글 조회
-	public List<CommentVO> commentList(String reqId) { 
-		int intId = Integer.parseInt(reqId);
+	// 댓글 조회
+	public List<CommentVO> commentList(String reqId) { // reqId 는 댓글이 달린 게시물의 번호를 뜻함.
+		int intId = Integer.parseInt(reqId); 
 		List<CommentVO> list = new ArrayList<>();
 		try {
 			conn = Common.getConnection();
 			stmt = conn.createStatement();
-			String sql= "SELECT * FROM B_COMMENT WHERE COMMENT_BOARD_ID = " + intId ; // reqId 는 댓글이 달린 게시물의 번호를 뜻함.
+			String sql= "SELECT * FROM B_COMMENT WHERE COMMENT_BOARD_ID = " + intId + "ORDER BY COMMENT_C_DATE DESC" ; // 최근 작성된 댓글이 위로 올라가도록 정렬
 			rs = stmt.executeQuery(sql);
 			
 			while(rs.next()) {
@@ -50,7 +50,7 @@ public class CommentDAO {
 		}
 		return list;
 	}
-	// 댓글 작성하기
+	// 댓글 작성
 	public boolean insertComment(String id, String content, String boardId) { 
 		int intId = Integer.parseInt(boardId); // boardId 는 int 이지만 String으로 들어오기 때문에 형변환
 		int result = 0;
@@ -67,7 +67,6 @@ public class CommentDAO {
 		} catch(Exception e) {
 				e.printStackTrace();
 		}
-		Common.close(rs);
 		Common.close(pstmt);
 		Common.close(conn);
 
