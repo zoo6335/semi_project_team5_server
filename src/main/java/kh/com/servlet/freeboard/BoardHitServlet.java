@@ -2,6 +2,9 @@ package kh.com.servlet.freeboard;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,15 +12,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import kh.com.common.Common;
 import kh.com.dao.FreeBoardDAO;
+import kh.com.vo.FreeBoardVO;
 
-@WebServlet("/CheckLoginServlet")
-public class LoginCheckServlet extends HttpServlet {
-private static final long serialVersionUID = 1L;
-	
+@WebServlet("/HitBoardServlet")
+public class BoardHitServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+	// CORS 처리
 	protected void doOptions(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		Common.corsResSet(response);
@@ -31,15 +41,20 @@ private static final long serialVersionUID = 1L;
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
 		
-		String getFb_user_id = (String)jsonObj.get("fb_user_id");
-		FreeBoardDAO dao = new FreeBoardDAO();
-		boolean isNotReg = dao.regIdCheck(getFb_user_id); //isNotReg = TRUE 가입안된 경우
+		String getFb_id = String.valueOf(jsonObj.get("fb_id"));
+		int intFb_id = Integer.parseInt(getFb_id);
+		// String -> int로 형변환
+		System.out.println("전달 받은 ID : " + intFb_id);
+		String getFb_hit = String.valueOf(jsonObj.get("fb_hit"));
+		int intFb_hit = Integer.parseInt(getFb_hit);
 	
+		FreeBoardDAO dao = new FreeBoardDAO();
+		boolean rstComplete = dao.boardHit(intFb_id, intFb_hit);
+		
 		PrintWriter out = response.getWriter();
 		JSONObject resJson = new JSONObject();
-		if(isNotReg) resJson.put("result", "OK");
+		if(rstComplete) resJson.put("result", "OK");
 		else resJson.put("result", "NOK");
 		out.print(resJson);
 	}
-
 }
