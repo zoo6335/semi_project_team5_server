@@ -304,7 +304,7 @@ public class FreeBoardDAO {
 		try {
 			conn = Common.getConnection();
 			stmt = conn.createStatement();
-			String sql = "SELECT COUNT * FROM TABLE B_COMMENT WHERE COMMENT_BOARD_ID = " + getFb_id;
+			String sql = "SELECT COUNT(*) FROM B_COMMENT WHERE COMMENT_BOARD_ID = " + getFb_id;
 			
 			rs = stmt.executeQuery(sql);
 			
@@ -323,6 +323,7 @@ public class FreeBoardDAO {
 		}
 		return list;
     }
+    
 
 	// 게시판 글 작성
 	public boolean boardWrite(String fb_category, String fb_user_id, String fb_title, String fb_content) {
