@@ -45,8 +45,9 @@ public class GalleryServlet extends HttpServlet {
 		JSONObject jsonObj = Common.getJsonObj(sb);
 		
 		System.out.println("Command : " + (String)jsonObj.get("cmd"));
+		System.out.println("id : " + (String)jsonObj.get("gal_id"));
 		String reqCmd = (String)jsonObj.get("cmd");
-		String reqId = (String)jsonObj.get("id");
+		String reqId = (String)jsonObj.get("gal_id");
 		
 		PrintWriter out = response.getWriter();
 		

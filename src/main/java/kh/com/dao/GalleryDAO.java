@@ -71,7 +71,7 @@ public class GalleryDAO {
 	public boolean galleryRegister(String title, String content, String image_url, String user_id) {
 		int result = 0;
 		
-		String sql = "INSERT INTO GALLERY(GAL_ID, TITLE, CONTENT, IMAGE_URL, CREATE_DATE, UPDATE_DATE, USER_ID) VALUES(GALLERY_SEQUENCE.NEXTVAL,?,?,?, SYSDATE, SYSDATE, ?)";
+		String sql = "INSERT INTO GALLERY(GAL_ID, TITLE, CONTENT, IMAGE_URL, CREATE_DATE, UPDATE_DATE, USER_ID) VALUES(GAL_ID_SEQ.NEXTVAL,?,?,?, SYSDATE, SYSDATE, ?)";
 		
 		
 		try {

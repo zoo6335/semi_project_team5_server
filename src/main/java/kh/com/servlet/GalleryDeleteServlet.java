@@ -38,7 +38,7 @@ public class GalleryDeleteServlet extends HttpServlet {
 		StringBuffer sb = Common.reqStringBuff(request);
 		JSONObject jsonObj = Common.getJsonObj(sb);
 		
-		String getId = (String)jsonObj.get("id");
+		String getId = (String)jsonObj.get("gal_id");
 		int intId = Integer.parseInt(getId);
 		GalleryDAO dao = new GalleryDAO();
 		boolean rstDelete = dao.galleryDelete(intId);
