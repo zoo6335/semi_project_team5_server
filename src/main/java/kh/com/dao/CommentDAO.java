@@ -73,6 +73,26 @@ public class CommentDAO {
 		if(result == 1) return true;
 		else return false;
 	}
+	// 댓글 삭제
+	public boolean deleteComment(String postId) { // 댓글 번호가 string 으로 들어오기 때문에 형 변환
+		int intPostId = Integer.parseInt(postId); // boardId 는 int 이지만 String으로 들어오기 때문에 형변환
+
+		int result = 0;
+		String sql = "DELETE FROM B_COMMENT WHERE COMMENT_ID = ? ";
+
+		try {
+			conn = Common.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, intPostId);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Common.close(pstmt);
+		Common.close(conn);
+		if(result == 1) return true; 
+		else return false;
+	}
 
 	
 }
