@@ -68,10 +68,10 @@ public class GalleryDAO {
 		return list;
 	}
 	
-	public boolean galleryRegister( String title, String content, String image_url) {
+	public boolean galleryRegister(String title, String content, String image_url, String user_id) {
 		int result = 0;
 		
-		String sql = "INSERT INTO GALLERY(GAL_ID, TITLE, CONTENT, IMAGE_URL, CREATE_DATE, UPDATE_DATE) VALUES(GALLERY_SEQUENCE.NEXTVAL,?,?,?, SYSDATE, SYSDATE)";
+		String sql = "INSERT INTO GALLERY(GAL_ID, TITLE, CONTENT, IMAGE_URL, CREATE_DATE, UPDATE_DATE, USER_ID) VALUES(GALLERY_SEQUENCE.NEXTVAL,?,?,?, SYSDATE, SYSDATE, ?)";
 		
 		
 		try {
@@ -80,6 +80,7 @@ public class GalleryDAO {
 			pstmt.setString(1, title);
 			pstmt.setString(2, content);
 			pstmt.setString(3, image_url);
+			pstmt.setString(4, user_id);
 			result = pstmt.executeUpdate(); // SELECT문은 executeQuery, executeUpdate는 INSERT, UPDATE, DELETE 일 떄!
 			System.out.println("갤러리 글쓰기 DB 결과 확인 : " + result);
 			
@@ -95,16 +96,16 @@ public class GalleryDAO {
 		else return false;
 	}
 	
-	public boolean memberDelete(String user_id) {
+	public boolean galleryDelete(int gal_id) {
 		int result = 0;
 		
-		String sql = "DELETE FROM B_MEMBER WHERE USER_ID = ?";
+		String sql = "DELETE FROM GALLERY WHERE GAL_ID = ?";
 		try {
 			
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, user_id);
+			pstmt.setInt(1, gal_id);
 			result = pstmt.executeUpdate();
 			
 		} catch(Exception e) {
@@ -119,19 +120,17 @@ public class GalleryDAO {
 		else return false;
 	}
 	
-	public boolean memberUpdate(String user_id, String pwd, String name, String email) {
+	public boolean galleryUpdate(int gal_id, String title, String content) {
 		int result = 0;
 		
-		String sql = "UPDATE B_MEMBER SET PWD = ?, NAME = ? , EMAIL = ? WHERE USER_ID = ?";
+		String sql = "UPDATE GALLERY SET TITLE = ?, CONTENT = ? WHERE GAL_ID = " + gal_id;
 		
 		
 		try {
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, pwd);
-			pstmt.setString(2, name);
-			pstmt.setString(3, email);
-			pstmt.setString(4, user_id);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
 			result = pstmt.executeUpdate(); // SELECT문은 executeQuery, executeUpdate는 INSERT, UPDATE, DELETE 일 떄!
 			System.out.println("회원 가입 DB 결과 확인 : " + result);
 			
