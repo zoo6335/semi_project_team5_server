@@ -22,7 +22,7 @@ public class BoardDAO extends HttpServlet {
 	private PreparedStatement pstmt = null;
 	
 	
-	// 게시판 내용 불러오기
+// 게시판 내용 불러오기
 	public List<BoardVO> BoardSelect() {
 		List<BoardVO> list = new ArrayList<>();
 		try {
@@ -136,7 +136,7 @@ public class BoardDAO extends HttpServlet {
 		return list;
 	}
 	
-//게시물 수정
+// 게시물 수정
 	public boolean boardUpdate(int intId, String gmb_title, String gmb_content, int intApplyTotal) {
 		int result = 0;
 		String sql = "UPDATE GET_MEMBER_BOARD SET GMB_TITLE = ? , GMB_CONTENT = ? , GMB_U_DATE = SYSDATE, GMB_APPLY_TOTAL = ? WHERE GMB_ID = " + intId;
@@ -160,7 +160,7 @@ public class BoardDAO extends HttpServlet {
 	}
 	
 	
-	// 조회수 증가
+// 조회수 증가
     public boolean boardUpdateHit(int intId, int intGmb_hit) {
     	int result = 0;
     	String sql = "UPDATE GET_MEMBER_BOARD SET GMB_HIT = ? WHERE GMB_ID = " + intId;
@@ -182,7 +182,7 @@ public class BoardDAO extends HttpServlet {
     }
 
 	
-//게시물 삭제 
+// 게시물 삭제 
 	public boolean boardDelete(int intId) {
 		int result = 0;
 		String sql = "DELETE FROM GET_MEMBER_BOARD WHERE GMB_ID = ?";
@@ -201,7 +201,7 @@ public class BoardDAO extends HttpServlet {
 		else return false;
 	}
 	
-	// 모집 신청하기
+// 모집 신청하기
     public boolean boardApply(int intId, int intGmb_apply) {
     	int result = 0;
     	String sql = "UPDATE GET_MEMBER_BOARD SET GMB_APPLY = ? WHERE GMB_ID = " + intId;
@@ -222,7 +222,7 @@ public class BoardDAO extends HttpServlet {
     	else return false;
     }
     
-    // 모집 완료처리
+// 모집중 -> 모집완료 처리
     public boolean boardApplyComp(int intId) {
     	int result = 0;
     	String sql = "UPDATE GET_MEMBER_BOARD SET GMB_DONE = '1' WHERE GMB_ID = " + intId;

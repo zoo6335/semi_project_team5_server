@@ -15,7 +15,7 @@ import org.json.simple.JSONObject;
 import kh.com.common.Common;
 import kh.com.dao.BoardDAO;
 
-
+// 게시물 내용 수정
 @WebServlet("/BoardUpdateServlet")
 public class BoardUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -41,7 +41,7 @@ public class BoardUpdateServlet extends HttpServlet {
 		System.out.println("전달 받은 ID : " + intId);
 		String getGmb_title = (String)jsonObj.get("gmb_title");
 		String getGmb_content = (String)jsonObj.get("gmb_content");
-		String getGmb_apply_total = (String)jsonObj.get("gmb_apply_total");
+		String getGmb_apply_total = String.valueOf(jsonObj.get("gmb_apply_total"));
 		int intApplyTotal = Integer.parseInt(getGmb_apply_total);
 	
 		BoardDAO dao = new BoardDAO();

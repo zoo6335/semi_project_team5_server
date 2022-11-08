@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import kh.com.common.Common;
 import kh.com.dao.BoardDAO;
 
+// 게시물 작성하기
 @WebServlet("/BoardWriteServlet")
 public class BoardWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
