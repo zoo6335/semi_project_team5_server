@@ -51,15 +51,18 @@ public class GalleryServlet extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 		
+		
 		if(!reqCmd.equals("GalleryInfo")) {
 			JSONObject resJson = new JSONObject();
 			resJson.put("result", "NOK");
 			out.print(resJson);
 		}
 		
-		GalleryDAO dao = new GalleryDAO();
-		List<GalleryVO> list = dao.gallerySelect(reqId);
 		
+		
+		GalleryDAO dao = new GalleryDAO();
+		List<GalleryVO> list = dao.gallerySelect();
+
 		JSONArray galleryArray = new JSONArray();
 		
 		for(GalleryVO e : list) {
