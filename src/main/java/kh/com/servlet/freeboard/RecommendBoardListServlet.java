@@ -66,6 +66,7 @@ public class RecommendBoardListServlet extends HttpServlet {
 			String dateToStr1 = dateFormat.format(e.getFb_c_date());
 			fBoardlist.put("fb_c_date", dateToStr1);
 			fBoardlist.put("fb_hit", e.getFb_hit());
+			fBoardlist.put("fb_comment_count", e.getFb_comment_count());
 			boardArray.add(fBoardlist);
 		}
 		System.out.println(boardArray);

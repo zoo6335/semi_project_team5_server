@@ -62,6 +62,7 @@ public class BoardDetailServlet extends HttpServlet {
 			fBoardlist.put("fb_c_date", dateToStr1);
 			fBoardlist.put("fb_hit", e.getFb_hit());
 			fBoardlist.put("fb_content", e.getFb_content());
+			fBoardlist.put("fb_comment_count", e.getFb_comment_count());
 			boardArray.add(fBoardlist);
 		}
 		System.out.println(boardArray);

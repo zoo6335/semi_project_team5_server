@@ -12,6 +12,7 @@ public class FreeBoardVO {
 	private Date fb_u_date;
 	private int fb_recommend;
 	private int fb_hit;
+	private int fb_comment_count;
 	
 	public int getFb_id() {
 		return fb_id;
@@ -66,6 +67,12 @@ public class FreeBoardVO {
 	}
 	public void setFb_hit(int fb_hit) {
 		this.fb_hit = fb_hit;
+	}
+	public int getFb_comment_count() {
+		return fb_comment_count;
+	}
+	public void setFb_comment_count(int fb_comment_count) {
+		this.fb_comment_count = fb_comment_count;
 	}
 };
 	

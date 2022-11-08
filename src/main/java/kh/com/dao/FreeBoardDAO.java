@@ -38,6 +38,7 @@ public class FreeBoardDAO {
 	            Date fb_u_date = rs.getDate("FB_U_DATE");
 	            int fb_recommend = rs.getInt("FB_RECOMMEND");
 	            int fb_hit = rs.getInt("FB_HIT");
+	            int fb_comment_count =  rs.getInt("FB_COMMENT_COUNT");
 	            
 	            FreeBoardVO vo = new FreeBoardVO();
 	            vo.setFb_id(fb_id);
@@ -49,6 +50,7 @@ public class FreeBoardDAO {
 	            vo.setFb_u_date(fb_u_date);
 	            vo.setFb_recommend(fb_recommend);
 	            vo.setFb_hit(fb_hit);
+	            vo.setFb_comment_count(fb_comment_count);
 	            list.add(vo);
 	            
 	         }
@@ -81,6 +83,7 @@ public class FreeBoardDAO {
 	            Date fb_u_date = rs.getDate("FB_U_DATE");
 	            int fb_recommend = rs.getInt("FB_RECOMMEND");
 	            int fb_hit = rs.getInt("FB_HIT");
+	            int fb_comment_count =  rs.getInt("FB_COMMENT_COUNT");
 	            
 	            FreeBoardVO vo = new FreeBoardVO();
 	            vo.setFb_id(fb_id);
@@ -92,6 +95,7 @@ public class FreeBoardDAO {
 	            vo.setFb_u_date(fb_u_date);
 	            vo.setFb_recommend(fb_recommend);
 	            vo.setFb_hit(fb_hit);
+	            vo.setFb_comment_count(fb_comment_count);
 	            list.add(vo);
 	            
 	         }
@@ -124,6 +128,7 @@ public class FreeBoardDAO {
 	            Date fb_u_date = rs.getDate("FB_U_DATE");
 	            int fb_recommend = rs.getInt("FB_RECOMMEND");
 	            int fb_hit = rs.getInt("FB_HIT");
+	            int fb_comment_count =  rs.getInt("FB_COMMENT_COUNT");
 	            
 	            FreeBoardVO vo = new FreeBoardVO();
 	            vo.setFb_id(fb_id);
@@ -135,6 +140,7 @@ public class FreeBoardDAO {
 	            vo.setFb_u_date(fb_u_date);
 	            vo.setFb_recommend(fb_recommend);
 	            vo.setFb_hit(fb_hit);
+	            vo.setFb_comment_count(fb_comment_count);
 	            list.add(vo);
 	            
 	         }
@@ -167,6 +173,7 @@ public class FreeBoardDAO {
 	            Date fb_u_date = rs.getDate("FB_U_DATE");
 	            int fb_recommend = rs.getInt("FB_RECOMMEND");
 	            int fb_hit = rs.getInt("FB_HIT");
+	            int fb_comment_count =  rs.getInt("FB_COMMENT_COUNT");
 	            
 	            FreeBoardVO vo = new FreeBoardVO();
 	            vo.setFb_id(fb_id);
@@ -178,6 +185,7 @@ public class FreeBoardDAO {
 	            vo.setFb_u_date(fb_u_date);
 	            vo.setFb_recommend(fb_recommend);
 	            vo.setFb_hit(fb_hit);
+	            vo.setFb_comment_count(fb_comment_count);
 	            list.add(vo);
 	            
 	         }
@@ -210,6 +218,7 @@ public class FreeBoardDAO {
 	            Date fb_u_date = rs.getDate("FB_U_DATE");
 	            int fb_recommend = rs.getInt("FB_RECOMMEND");
 	            int fb_hit = rs.getInt("FB_HIT");
+	            int fb_comment_count =  rs.getInt("FB_COMMENT_COUNT");
 	            
 	            FreeBoardVO vo = new FreeBoardVO();
 	            vo.setFb_id(fb_id);
@@ -221,6 +230,7 @@ public class FreeBoardDAO {
 	            vo.setFb_u_date(fb_u_date);
 	            vo.setFb_recommend(fb_recommend);
 	            vo.setFb_hit(fb_hit);
+	            vo.setFb_comment_count(fb_comment_count);
 	            list.add(vo);
 	            
 	         }
@@ -254,6 +264,7 @@ public class FreeBoardDAO {
 	            Date fb_u_date = rs.getDate("FB_U_DATE");
 	            int fb_recommend = rs.getInt("FB_RECOMMEND");
 	            int fb_hit = rs.getInt("FB_HIT");
+	            int fb_comment_count =  rs.getInt("FB_COMMENT_COUNT");
 				
 				FreeBoardVO vo = new FreeBoardVO();
 				vo.setFb_id(fb_id);
@@ -265,6 +276,7 @@ public class FreeBoardDAO {
 	            vo.setFb_u_date(fb_u_date);
 	            vo.setFb_recommend(fb_recommend);
 	            vo.setFb_hit(fb_hit);
+	            vo.setFb_comment_count(fb_comment_count);
 	            list.add(vo);
 			}
 			Common.close(rs);
@@ -299,36 +311,32 @@ public class FreeBoardDAO {
     }
     
     // 댓글수
-    public List<FreeBoardVO> boardComment(int getFb_id) {
-    	List<FreeBoardVO> list = new ArrayList<>();
+	public boolean boardComment(int fb_id) {
+		int result = 0;
+		String sql = "UPDATE FREE_BOARD SET FB_COMMENT_COUNT = (SELECT COUNT(*) FROM B_COMMENT WHERE COMMENT_BOARD_ID = ?) WHERE FB_ID = ?";
 		try {
 			conn = Common.getConnection();
-			stmt = conn.createStatement();
-			String sql = "SELECT COUNT(*) FROM B_COMMENT WHERE COMMENT_BOARD_ID = " + getFb_id;
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, fb_id);
+			pstmt.setInt(2, fb_id);
+			result = pstmt.executeUpdate();	
+			System.out.println("글 등록 결과 확인 : " + result);
 			
-			rs = stmt.executeQuery(sql);
-			
-			while(rs.next()) {
-				int fb_id = rs.getInt("FB_ID");
-				
-				FreeBoardVO vo = new FreeBoardVO();
-				vo.setFb_id(fb_id);
-	            list.add(vo);
-			}
-			Common.close(rs);
-			Common.close(stmt);
-			Common.close(conn);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return list;
-    }
+		Common.close(pstmt);
+		Common.close(conn);
+		
+		if(result == 1) return true;
+		else return false;
+	}
     
 
 	// 게시판 글 작성
 	public boolean boardWrite(String fb_category, String fb_user_id, String fb_title, String fb_content) {
 		int result = 0;
-		String sql = "INSERT INTO FREE_BOARD VALUES(FB_ID_SEQ.NEXTVAL, ?, ?, ?, ?, DEFAULT, NULL, DEFAULT, DEFAULT)";
+		String sql = "INSERT INTO FREE_BOARD VALUES(FB_ID_SEQ.NEXTVAL, ?, ?, ?, ?, DEFAULT, NULL, DEFAULT, DEFAULT, DEFAULT)";
 		try {
 			conn = Common.getConnection();
 			pstmt = conn.prepareStatement(sql);
