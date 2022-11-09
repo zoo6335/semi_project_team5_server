@@ -38,7 +38,7 @@ public class GalleryUpdateServlet extends HttpServlet {
 		JSONObject jsonObj = Common.getJsonObj(sb); // 문자열로 변환한 sb를를 JsonObj으로 만들어서 담는다.  -> 왜냐면 통신은 json으로 이루어지기 떄문에
 		
 		
-		String getGal_id = (String)jsonObj.get("gal_id");
+		String getGal_id = String.valueOf(jsonObj.get("gal_id"));
 		String getTitle = (String)jsonObj.get("title");
 		String getContent = (String)jsonObj.get("content");
 		
