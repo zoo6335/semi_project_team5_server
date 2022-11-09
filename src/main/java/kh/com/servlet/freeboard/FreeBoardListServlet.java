@@ -62,7 +62,7 @@ public class FreeBoardListServlet extends HttpServlet {
 			fBoardlist.put("fb_category", e.getFb_category());
 			fBoardlist.put("fb_user_id", e.getFb_user_id());
 			fBoardlist.put("fb_title", e.getFb_title());
-			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
+			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
 			String dateToStr1 = dateFormat.format(e.getFb_c_date());
 			fBoardlist.put("fb_c_date", dateToStr1);
 			fBoardlist.put("fb_hit", e.getFb_hit());
