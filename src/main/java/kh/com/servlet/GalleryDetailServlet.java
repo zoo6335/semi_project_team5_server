@@ -1,3 +1,4 @@
+
 package kh.com.servlet;
 
 import java.io.IOException;
@@ -17,51 +18,41 @@ import org.json.simple.JSONObject;
 
 import kh.com.common.Common;
 import kh.com.dao.GalleryDAO;
-import kh.com.dao.MemberDAO;
 import kh.com.vo.GalleryVO;
-import kh.com.vo.MemberVO;
 
-/**
- * Servlet implementation class GalleryServlet
- */
-@WebServlet("/GalleryServlet")
-public class GalleryServlet extends HttpServlet {
+// 게시판 내용 상세보기
+@WebServlet("/GalleryDetailServlet")
+public class GalleryDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+    
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
-	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
-		    throws ServletException, IOException {
-		response = Common.corsResSet(response);
+	// CORS 처리
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		Common.corsResSet(response);
 	}
 
-	@SuppressWarnings("unchecked")
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@SuppressWarnings({ "unchecked" })
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		response = Common.corsResSet(response); //응답할 response를 cors 처리를 해서 담아둔다.
-
-		StringBuffer sb = Common.reqStringBuff(request);  // 요청받은 data를 문자열로 stringbuff로 변환해서 sb에 담아둔다
-		JSONObject jsonObj = Common.getJsonObj(sb);
+		Common.corsResSet(response);
 		
-		System.out.println("Command : " + (String)jsonObj.get("cmd"));
-		System.out.println("id : " + (String)jsonObj.get("gal_id"));
-		String reqCmd = (String)jsonObj.get("cmd");
-		String reqId = (String)jsonObj.get("gal_id");
+		StringBuffer sb = Common.reqStringBuff(request);
+		JSONObject jsonObj = Common.getJsonObj(sb);
 		
 		PrintWriter out = response.getWriter();
 		
-		
-		if(!reqCmd.equals("GalleryInfo")) {
-			JSONObject resJson = new JSONObject();
-			resJson.put("result", "NOK");
-			out.print(resJson);
-		}
-		
-		
-		
+		String Gal_id = (String)jsonObj.get("gal_id");
+		int intId = Integer.parseInt(Gal_id);
+		System.out.println("전달 받은 ID : " + intId);
+
 		GalleryDAO dao = new GalleryDAO();
-		List<GalleryVO> list = dao.gallerySelect();
+		List<GalleryVO> list = dao.galleryDetailSelect(intId);
 
 		JSONArray galleryArray = new JSONArray();
 		
@@ -81,8 +72,4 @@ public class GalleryServlet extends HttpServlet {
 		out.print(galleryArray);
 	}
 	
-	@Override
-	public void destroy() {
-		System.out.println("destroy 메소드 호출");
-	}
 }

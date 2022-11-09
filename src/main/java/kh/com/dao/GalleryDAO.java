@@ -20,18 +20,16 @@ public class GalleryDAO {
 	private PreparedStatement pstmt = null;
 	
 	
-	public List<GalleryVO> gallerySelect(String reqId) {
+	public List<GalleryVO> galleryDetailSelect(int reqId) {
 		List<GalleryVO> list = new ArrayList<>();
 		try {
 			conn = Common.getConnection();
 			stmt = conn.createStatement();
 			String sql = null;
 			
-			if(reqId.equals("ALL")) sql = "SELECT * FROM GALLERY";
-			else {
-				int intId = Integer.parseInt(reqId);
-				sql = "SELECT * FROM GALLERY WHERE GAL_ID = " +  intId;
-			}
+	
+			sql = "SELECT * FROM GALLERY WHERE GAL_ID = " +  reqId;
+
 			
 			rs = stmt.executeQuery(sql);
 			
@@ -67,6 +65,52 @@ public class GalleryDAO {
 		
 		return list;
 	}
+	
+	public List<GalleryVO> gallerySelect() {
+		List<GalleryVO> list = new ArrayList<>();
+		try {
+			conn = Common.getConnection();
+			stmt = conn.createStatement();
+			String sql = null;
+			
+			sql = "SELECT * FROM GALLERY";
+
+			
+			rs = stmt.executeQuery(sql);
+			
+			// 로그인 과는 다르게 rs.next에는 회원정보를 전부 긁어오기 때문에 next에는 true 다음 바로 false가 아닌 값이 들어온다.
+			while(rs.next()) {
+				
+				int gal_id = rs.getInt("GAL_ID");
+				String title = rs.getString("TITLE");
+				String content = rs.getString("CONTENT");
+				String image_url = rs.getString("IMAGE_URL");
+				Date create_date = rs.getDate("CREATE_DATE");
+				Date update_date = rs.getDate("UPDATE_DATE");
+
+				
+				GalleryVO vo = new GalleryVO();
+				vo.setGal_id(gal_id);
+				vo.setTitle(title);
+				vo.setContent(content);
+				vo.setImage_url(image_url);
+				vo.setCreate_date(create_date);
+				vo.setUpdate_date(update_date);
+				list.add(vo);
+			}
+			
+			Common.close(rs);
+			Common.close(stmt);
+			Common.close(conn);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return list;
+	}
+	
 	
 	public boolean galleryRegister(String title, String content, String image_url, String user_id) {
 		int result = 0;
