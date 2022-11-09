@@ -59,14 +59,6 @@ public class GalleryRegServlet extends HttpServlet {
 		else resJson.put("result", "NOK");
 		out.print(resJson);
 		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 	
 	@Override

@@ -62,7 +62,8 @@ public class GalleryDetailServlet extends HttpServlet {
 			galleryInfo.put("title", e.getTitle());
 			galleryInfo.put("content", e.getContent());
 			galleryInfo.put("image_url", e.getImage_url());
-			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
+			galleryInfo.put("user_id", e.getUser_id());
+			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
 			String createDateToStr = dateFormat.format(e.getCreate_date());
 			String updateDateToStr = dateFormat.format(e.getUpdate_date());
 			galleryInfo.put("create_date", createDateToStr);
