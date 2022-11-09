@@ -28,7 +28,7 @@ public class GalleryDAO {
 			String sql = null;
 			
 	
-			sql = "SELECT * FROM GALLERY WHERE GAL_ID = " +  reqId;
+			sql = "SELECT * FROM B_MEMBER B, GALLERY G WHERE G.GAL_ID = " + reqId + "AND G.USER_ID = B.USER_ID";
 
 			
 			rs = stmt.executeQuery(sql);
@@ -39,6 +39,7 @@ public class GalleryDAO {
 				int gal_id = rs.getInt("GAL_ID");
 				String title = rs.getString("TITLE");
 				String content = rs.getString("CONTENT");
+				String user_id = rs.getString("USER_ID");
 				String image_url = rs.getString("IMAGE_URL");
 				Date create_date = rs.getDate("CREATE_DATE");
 				Date update_date = rs.getDate("UPDATE_DATE");
@@ -48,6 +49,7 @@ public class GalleryDAO {
 				vo.setGal_id(gal_id);
 				vo.setTitle(title);
 				vo.setContent(content);
+				vo.setUser_id(user_id);
 				vo.setImage_url(image_url);
 				vo.setCreate_date(create_date);
 				vo.setUpdate_date(update_date);
