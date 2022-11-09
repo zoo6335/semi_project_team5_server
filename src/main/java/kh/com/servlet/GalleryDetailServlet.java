@@ -17,9 +17,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import kh.com.common.Common;
-import kh.com.dao.BoardDAO;
 import kh.com.dao.GalleryDAO;
-import kh.com.vo.BoardVO;
 import kh.com.vo.GalleryVO;
 
 // 게시판 내용 상세보기
@@ -49,9 +47,8 @@ public class GalleryDetailServlet extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 		
-		String getGal_id = (String)jsonObj.get("gal_id");
-		// JSON 데이터는 String 이므로 -> 원하는 Int 형으로 변환
-		int intId = Integer.parseInt(getGal_id);
+		String Gal_id = (String)jsonObj.get("gal_id");
+		int intId = Integer.parseInt(Gal_id);
 		System.out.println("전달 받은 ID : " + intId);
 
 		GalleryDAO dao = new GalleryDAO();
@@ -64,6 +61,7 @@ public class GalleryDetailServlet extends HttpServlet {
 			galleryInfo.put("id", e.getGal_id());
 			galleryInfo.put("title", e.getTitle());
 			galleryInfo.put("content", e.getContent());
+			galleryInfo.put("image_url", e.getImage_url());
 			DateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
 			String createDateToStr = dateFormat.format(e.getCreate_date());
 			String updateDateToStr = dateFormat.format(e.getUpdate_date());
