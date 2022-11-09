@@ -55,7 +55,7 @@ public List<ReviewBoardVO> BoardSelect() {
 
 public boolean WriteBoard(String title,String content) {
 	int result = 0;
-	String sql = "INSERT INTO BOARDLIST(RV_TITLE, RV_CONTENT) VALUES(?, ?)";
+	String sql = "INSERT INTO REVIEW(RV_TITLE, RV_CONTENT) VALUES(?, ?)";
 	try {
 		conn = Common.getConnection();
 		pstmt = conn.prepareStatement(sql);
@@ -82,7 +82,7 @@ public ReviewBoardVO DetailBoard(String id) {
 	try {
 		conn = Common.getConnection();
 		stmt = conn.createStatement();
-		String sql = "SELECT ID, RV_TITLE, RV_CONTENT, WRITEDATE, COMMENT_NUM FROM BOARDLIST WHERE ID = " + "'" + id + "'";
+		String sql = "SELECT ID, RV_TITLE, RV_CONTENT, WRITEDATE, COMMENT_NUM FROM REVIEW WHERE ID = " + "'" + id + "'";
 		rs = stmt.executeQuery(sql);
 		
 		while(rs.next()) {
